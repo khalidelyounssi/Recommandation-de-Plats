@@ -1,10 +1,9 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
-import PlateCard from './components/PlateCard'
+import { useState } from "react";
+import PlateCard from "./components/PlateCard";
+
 function App() {
+
+  const [search, setSearch] = useState("");
 
   const plates = [
     { id: 1, name: "Pizza", price: 50, is_available: true },
@@ -12,19 +11,23 @@ function App() {
     { id: 3, name: "Tacos", price: 30, is_available: true }
   ];
 
+  const filtered = plates.filter(p =>
+    p.name.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
-  <>
-    {plates.map((p) => (
-      <PlateCard
-        key={p.id}
-        name={p.name}
-        price={p.price}
-        is_available={p.is_available}
+    <>
+      <input
+        placeholder="Search..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
       />
-    ))}
-  </>
-);
+
+      {filtered.map((p) => (
+        <PlateCard key={p.id} {...p} />
+      ))}
+    </>
+  );
 }
 
-
-export default App
+export default App;
