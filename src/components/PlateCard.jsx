@@ -3,25 +3,20 @@ import { Link } from "react-router-dom";
 function PlateCard({ id, name, price, is_available }) {
   return (
     <Link to={`/plates/${id}`}>
-      <div className="bg-white p-5 rounded-xl shadow-md hover:shadow-xl transition duration-300 mb-4 border cursor-pointer">
+      <div className="bg-white rounded-2xl shadow hover:shadow-xl hover:scale-105 transition duration-300 p-4">
         
-        <h2 className="text-xl font-semibold text-gray-800">
-          {name}
-        </h2>
+        <img
+          src={`https://source.unsplash.com/400x300/?food,${id}`}
+          className="rounded-xl h-40 w-full object-cover"
+        />
 
-        <p className="text-gray-500 mt-1">
-          {price} MAD
-        </p>
+        <h2 className="mt-3 font-bold">{name}</h2>
 
-        {is_available ? (
-          <span className="inline-block mt-3 px-3 py-1 text-sm bg-green-100 text-green-700 rounded-full">
-            Disponible
-          </span>
-        ) : (
-          <span className="inline-block mt-3 px-3 py-1 text-sm bg-red-100 text-red-700 rounded-full">
-            Indisponible
-          </span>
-        )}
+        <p className="text-orange-600 font-bold">{price} MAD</p>
+
+        <span className={is_available ? "text-green-600" : "text-red-500"}>
+          {is_available ? "Disponible" : "Indisponible"}
+        </span>
 
       </div>
     </Link>

@@ -1,24 +1,36 @@
-import { Link } from "react-router-dom";
+import Navbar from "../components/Navbar";
 
 function Home() {
   return (
-    <div className="h-screen flex flex-col justify-center items-center bg-gray-100">
+    <div className="w-full min-h-screen bg-gray-50">
+      
+      <Navbar />
 
-      <h1 className="text-4xl font-bold mb-4 text-gray-800">
-        🍔 Food App
-      </h1>
+      <div className="px-16 py-20 grid grid-cols-2 items-center">
+        
+        <div>
+          <h1 className="text-6xl font-bold">
+            L'art de la <span className="text-orange-600">gastronomie</span>
+          </h1>
 
-      <p className="text-gray-500 mb-6">
-        Découvrez les meilleurs plats
-      </p>
+          <p className="text-gray-600 mt-6">
+            Découvrez les meilleurs plats de la ville.
+          </p>
 
-      <Link
-        to="/plates"
-        className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg transition"
-      >
-        Voir les plats
-      </Link>
+          <div className="mt-6 flex bg-white rounded-full shadow overflow-hidden w-96">
+            <input className="flex-1 px-4 py-3 outline-none" placeholder="Search..." />
+            <button className="bg-orange-600 text-white px-6">Chercher</button>
+          </div>
+        </div>
 
+        <div className="flex justify-center">
+          <img
+            src="https://source.unsplash.com/400x400/?food"
+            className="rounded-full w-80 h-80 object-cover"
+          />
+        </div>
+
+      </div>
     </div>
   );
 }

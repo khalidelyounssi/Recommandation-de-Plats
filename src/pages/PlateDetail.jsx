@@ -1,46 +1,43 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import Navbar from "../components/Navbar";
 
-function PlateDetail() {
+function PlateDetails() {
   const { id } = useParams();
+  const [plate, setPlate] = useState(null);
 
-  const plates = [
-    { id: 1, name: "Pizza", price: 50, description: "Delicious Italian pizza " },
-    { id: 2, name: "Burger", price: 40, description: "Juicy beef burger " },
-    { id: 3, name: "Tacos", price: 30, description: "Mexican tacos " },
-  ];
+  useEffect(() => {
+    axios.get(`http://localhost:8001/api/plats/${id}`)
+      .then(res => setPlate(res.data.data || res.data));
+  }, [id]);
 
-  const plate = plates.find(p => p.id == id);
-
-  if (!plate) return <p className="text-center mt-10">Not found</p>;
+  if (!plate) return <p className="p-10">Loading...</p>;
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100">
+    <div className="w-full min-h-screen bg-gray-50">
+      
+      <Navbar />
 
-      <div className="bg-white p-6 rounded-xl shadow-lg w-80 text-center">
+      <div className="px-16 py-10 grid grid-cols-2 gap-10">
+        
+        <img
+          src={`https://source.unsplash.com/500x400/?food,${id}`}
+          className="rounded-3xl"
+        />
 
-        <h1 className="text-3xl font-bold text-gray-800 mb-2">
-          {plate.name}
-        </h1>
+        <div>
+          <h1 className="text-4xl font-bold">{plate.name}</h1>
+          <p className="text-orange-600 text-2xl">{plate.price} MAD</p>
 
-        <p className="text-gray-500 mb-4">
-          {plate.description}
-        </p>
-
-        <p className="text-xl font-semibold text-blue-500 mb-6">
-          {plate.price} MAD
-        </p>
-
-        <Link
-          to="/plates"
-          className="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-700 transition"
-        >
-          ⬅ Retour
-        </Link>
+          <button className="mt-6 bg-orange-600 text-white px-6 py-3 rounded-xl">
+            Order Now
+          </button>
+        </div>
 
       </div>
-
     </div>
   );
 }
 
-export default PlateDetail;
+export default PlateDetails;

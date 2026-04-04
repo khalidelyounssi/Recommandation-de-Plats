@@ -1,44 +1,42 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import Navbar from "../components/Navbar";
 import PlateCard from "../components/PlateCard";
 
 function Plates() {
-  const [search, setSearch] = useState("");
+  const [plates, setPlates] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const plates = [
-    { id: 1, name: "Pizza", price: 50, is_available: true },
-    { id: 2, name: "Burger", price: 40, is_available: false },
-    { id: 3, name: "Tacos", price: 30, is_available: true },
-  ];
+  useEffect(() => {
+    axios.get("http://127.0.0.1:8001/api/plats")
+      .then(res => {
+        setPlates(res.data.data || res.data);
+        setLoading(false);
+      })
+      .catch(err => {
+        setError("Erreur lors du chargement");
+        setLoading(false);
+      });
+  }, []);
 
-  const filtered = plates.filter(p =>
-    p.name.toLowerCase().includes(search.toLowerCase())
-  );
+  // 🔄 Loading
+  if (loading) {
+    return <div className="text-center mt-10">Chargement...</div>;
+  }
+
+  // ❌ Error
+  if (error) {
+    return <div className="text-center mt-10 text-red-500">{error}</div>;
+  }
 
   return (
-    <div className="p-6">
+    <div className="w-full min-h-screen bg-gray-50">
+      
+      <Navbar />
 
-      <h1 className="text-3xl font-bold mb-6 text-center">
-        🍽️ Nos Plats
-      </h1>
-
-      <div className="flex justify-center mb-6">
-        <input
-          type="text"
-          placeholder="Rechercher un plat..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="border p-2 rounded-lg w-64 focus:outline-none focus:ring-2 focus:ring-blue-400"
-        />
-      </div>
-
-      {filtered.length === 0 && (
-        <p className="text-center text-gray-500">
-          Aucun plat trouvé
-        </p>
-      )}
-
-      <div className="grid md:grid-cols-3 gap-4">
-        {filtered.map((p) => (
+      <div className="px-16 py-10 grid grid-cols-4 gap-6">
+        {plates.map((p) => (
           <PlateCard key={p.id} {...p} />
         ))}
       </div>
